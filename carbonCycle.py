@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# h will be .2 for now, might add tkinter or slider to change
-
+#the euler functions for each compartment (yn = yn-1 + h*f(x))
 def n1calc(n1val, n2val, n3val, n4val, n5val, n6val, n7val,time, h):
     global k12,k21,k32,k23,k17,k16,k14,k41,k64,k54,k65,k76
     human_add = ( .5* (np.e**(.03*time)))
@@ -36,6 +35,7 @@ def n7calc(n1val, n2val, n3val, n4val, n5val, n6val, n7val,time, h):
     return newval
 
 #k calculations
+#computed from model given
 k12 = 100/1000 
 k21 = 100/700 
 k32 = (100/3)/1000
@@ -50,7 +50,7 @@ k65 = 15/700
 k76 = 2/60
 #array creation
 h = .1
-t = np.arange(0,117,.1)
+t = np.arange(0,120,.1)
 n1 = np.ones(len(t))
 n2 = np.zeros(len(t))
 n3 = np.zeros(len(t))
@@ -58,7 +58,7 @@ n4 = np.zeros(len(t))
 n5 = np.zeros(len(t))
 n6 = np.zeros(len(t))
 n7 = np.zeros(len(t))
-#intial values for each comapartment
+#intial values for each compartment
 n1[0] = 700
 n2[0] = 1000
 n3[0] = 36000
@@ -68,22 +68,25 @@ n6[0] = 60
 n7[0] = 1500
 for i in range(len(t) - 1):
     n1[i+1] = n1calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],t[i],h)
-    n2[i+1] = n2calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h)
-    n3[i+1] = n3calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h)
-    n4[i+1] = n4calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h)
-    n5[i+1] = n5calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h)
-    n6[i+1] = n6calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h)
-    n7[i+1] = n7calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],t[i],h)
-plt.plot(t,n1)
-plt.plot(t,n2)
-plt.plot(t,n3)
-plt.plot(t,n4)
-plt.plot(t,n5)
-plt.plot(t,n6)
-plt.plot(t,n7)
-plt.legend(["Atmosphere","Mixed Upper Ocean","Deep Ocean","Small Plants","Big plants","Dead shit","soil"])
-plt.axis([0,117,0,4000])
-
+    n2[i+1] = n2calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h) 
+    n3[i+1] = n3calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h) 
+    n4[i+1] = n4calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h) 
+    n5[i+1] = n5calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h) 
+    n6[i+1] = n6calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],h) 
+    n7[i+1] = n7calc(n1[i],n2[i],n3[i],n4[i],n5[i],n6[i],n7[i],t[i],h) 
+#graphing for each
+plt.plot(t,n1-700)
+plt.plot(t,n2-1000)
+plt.plot(t,n3-36000)
+plt.plot(t,n4-130)
+plt.plot(t,n5-700)
+plt.plot(t,n6-60)
+plt.plot(t,n7-1500)
+plt.legend(["Atmosphere","Mixed Upper Ocean","Deep Ocean","Small Biota","Large Biota","Detritus","Soil"])
+plt.axis([0,80,0,100])
+plt.xlabel('Time')
+plt.ylabel('Change in mass (GT)')
+plt.title('Change in Mass Over Time with Human Intervention')
 
 
 plt.show()
